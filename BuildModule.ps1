@@ -7,10 +7,6 @@ using namespace System.Management.Automation.Language
 [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
 param
 (
-    [Parameter(Mandatory)]
-    [Alias("ModuleVersion")]
-    [version]$Version,
-
     [Parameter()]
     [string]
     $Destination = "$PSScriptRoot\Releases"
@@ -18,6 +14,8 @@ param
 $ModuleName="UnattendXmlBuilder"
 
 #region Create destination folder and make sure it is empty
+$ReleaseNotes = Get-Content -LiteralPath "$PSScriptRoot\Release notes.txt" -Raw
+$Version = $ReleaseNotes.Split(':')[0]
 $DestinationDirectory = Join-Path -Path $Destination -ChildPath "$ModuleName\$Version"
 $null = New-Item -Path $DestinationDirectory -ItemType Directory -Force
 
@@ -97,7 +95,6 @@ $FileList = (Get-ChildItem -LiteralPath $DestinationDirectory -File -Recurse | F
 $PublicFunctionNames = ($PublicFunctionNames | ForEach-Object -Process {
     "'$_'"
 }) -join ','
-$ReleaseNotes = Get-Content -LiteralPath "$PSScriptRoot\Release notes.txt" -Raw
 
 ((Get-Content -LiteralPath "$PSScriptRoot\ModuleManifest.psd1" -Raw) -replace '{(?=[^\d])','{{' -replace '(?<!\d)}','}}') -f @(
     "'$Version'"

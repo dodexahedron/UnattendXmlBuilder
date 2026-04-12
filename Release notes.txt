@@ -1,12 +1,20 @@
-1.1
+2.0.0:
+    Added parameter validation for the -WDS and -DataImage switches in Add-UnattendImage
+        If a false value is specified it will throw an error.
+    Fixed the checks for several parameters for Add-UnattendImage so that values that PowerShell would convert to false are now passed along properly (empty strings, the number 0, etc.).
+    In Add-UnattendCommand, converted -FirstLogonCommand and -LogonCommand from switch parameters to string array parameters and removed the -Command parameter from the FirstLogon and LogonPersistent parameter sets.
+        This means users can specify the commands to run directly in the -FirstLogonCommand and -LogonCommand parameters instead of having to specify both a switch and -Command.
+    Updated the product key argument completers replacing the win 10 keys with 11 and adding server 2025 standard and datacenter.
+    Added -UserLocale parameter to New-UnattendBuilder
+1.1:
     Assign parameter position 0 to Export-UnattendFile:FilePath
     Add "RecoveryBIOS" as a valid value for Add-UnattendDiskPartition:PartitionType
     Update the BIOS disk template for Add-UnattendDiskPartition so it creates the partition with the correct ID.
-1.0.3
+1.0.3:
     Resolve relative paths for the SourceFile parameter of the New-UnattendBuilder command
-1.0.2
+1.0.2:
     Fix TimeZone completer for Set-UnattendTimeSetting
-1.0.1
+1.0.1:
     Add argument completers for the following Commands and parameters:
         Set-UnattendTimeSetting:TimeZone
         Set-UnattendLanguageSetting:UiLanguageFallback
@@ -21,5 +29,5 @@
         Set-UnattendFirewallSetting:EnabledFirewallGroups
         Set-UnattendFirewallSetting:DisabledFirewallGroups
         Set-UnattendFirewallSetting:LogDroppedPackets
-1.0
+1.0:
     Initial release
