@@ -20,10 +20,10 @@
     auditUser
 
 .PARAMETER FirstLogonCommand
-    Specifies that the command should only run the first time a user logs in.
+    Specifies the command line that should only run the first time a user logs in.
 
 .PARAMETER LogonCommand
-    Specifies that the command is persistent, and should run every time a user logs in.
+    Specifies the command line for a persistent command that should run every time a user logs in.
 
 .PARAMETER Async
     Specifies that the command is run asynchronously so the logon process can finish quicker.
@@ -70,11 +70,11 @@ function Add-UnattendCommand
         $Pass = 'specialize',
 
         [Parameter(Mandatory, ParameterSetName = 'FirstLogon')]
-        [switch]
+        [string[]]
         $FirstLogonCommand,
 
         [Parameter(Mandatory, ParameterSetName = 'LogonPersistent')]
-        [switch]
+        [string[]]
         $LogonCommand,
 
         [Parameter(ParameterSetName = 'Default')]
@@ -91,7 +91,7 @@ function Add-UnattendCommand
         [string]
         $RebootBehavior,
 
-        [Parameter(Mandatory, Position = 0)]
+        [Parameter(Mandatory, Position = 0, ParameterSetName = "Default")]
         [string[]]
         $Command,
 
@@ -103,17 +103,20 @@ function Add-UnattendCommand
         [pscredential]
         $RunAsCredential
     )
+
     process
     {
-        if ($FirstLogonCommand)
+        if ($PSBoundParameters.ContainsKey('FirstLogonCommand'))
         {
+            $CommandsToAdd = $FirstLogonCommand
             $Component         = $UnattendBuilder.GetOrCreateComponent('Microsoft-Windows-Shell-Setup', 'oobeSystem')
             $ParentElementName = 'FirstLogonCommands'
             $ElementName       = 'SynchronousCommand'
             $CmdElementName    = 'CommandLine'
         }
-        elseif ($LogonCommand)
+        elseif ($PSBoundParameters.ContainsKey('LogonCommand'))
         {
+            $CommandsToAdd = $LogonCommand
             $Component         = $UnattendBuilder.GetOrCreateComponent('Microsoft-Windows-Shell-Setup', 'oobeSystem')
             $ParentElementName = 'LogonCommands'
             $ElementName       = 'AsynchronousCommand'
@@ -121,6 +124,7 @@ function Add-UnattendCommand
         }
         else
         {
+            $CommandsToAdd = $Command
             $CmdElementName = 'Path'
             if ($Pass -eq "windowsPE")
             {
@@ -146,7 +150,7 @@ function Add-UnattendCommand
         $ParentElement = $UnattendBuilder.GetOrCreateChildElement($ParentElementName, $Component)
         $CommandCounter = $ParentElement.ChildNodes.Count + 1
 
-        foreach ($Cmd in $Command)
+        foreach ($Cmd in $CommandsToAdd)
         {
             $CommandElement = $ParentElement.AppendChild($UnattendBuilder.CreateElement($ElementName, @{action = 'add'}))
             $UnattendBuilder.CreateAndAppendElement($CmdElementName, $Cmd, $CommandElement)
