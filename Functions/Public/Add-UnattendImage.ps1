@@ -111,10 +111,12 @@ function Add-UnattendImage
         $Credential,
 
         [Parameter(Mandatory, ParameterSetName = "WDS")]
+        [ValidateSet("True")]
         [switch]
         $WDS,
 
         [Parameter(Mandatory, ParameterSetName = "DataImage")]
+        [ValidateSet("True")]
         [switch]
         $DataImage,
 
@@ -133,7 +135,11 @@ function Add-UnattendImage
         if ($WDS)
         {
             $SubComponent = $UnattendBuilder.GetOrCreateChildElement('WindowsDeploymentServices', $Component)
-            if ($SourceImagePath -or $SourceImageGroup -or $SourceImageName -or $DestinationDiskID -or $DestinationPartitionID)
+            if ($PSBoundParameters.ContainsKey('SourceImagePath') -or
+                $PSBoundParameters.ContainsKey('SourceImageGroup') -or
+                $PSBoundParameters.ContainsKey('SourceImageName') -or
+                $PSBoundParameters.ContainsKey('DestinationDiskID') -or
+                $PSBoundParameters.ContainsKey('DestinationPartitionID'))
             {
                 $ImageSelection = $SubComponent.AppendChild($UnattendBuilder.CreateElement('ImageSelection'))
                 switch ($PSBoundParameters.Keys)
@@ -170,7 +176,8 @@ function Add-UnattendImage
                     }
                 }
             }
-            if ($Credential)
+
+            if ($PSBoundParameters.ContainsKey('Credential'))
             {
                 $Login = $SubComponent.AppendChild($UnattendBuilder.CreateElement('Login'))
                 $UnattendBuilder.AddCredentialToElement($Credential, $Login)
@@ -197,7 +204,12 @@ function Add-UnattendImage
                 }
             }
 
-            if ($SourceImagePath -or $SourceImageIndex -or $SourceImageName -or $SourceImageDescription -or $Credential)
+            
+            if ($PSBoundParameters.ContainsKey('SourceImagePath') -or
+                $PSBoundParameters.ContainsKey('SourceImageIndex') -or
+                $PSBoundParameters.ContainsKey('SourceImageName') -or
+                $PSBoundParameters.ContainsKey('SourceImageDescription') -or
+                $PSBoundParameters.ContainsKey('Credential'))
             {
                 $InstallFrom = $ImageElement.AppendChild($UnattendBuilder.CreateElement('InstallFrom'))
                 switch ($PSBoundParameters.Keys)
@@ -234,12 +246,14 @@ function Add-UnattendImage
                     }
                 }
             }
-            if ($DestinationDiskID)
+
+            if ($PSBoundParameters.ContainsKey('DestinationDiskID'))
             {
                 $InstallTo = $UnattendBuilder.GetOrCreateChildElement('InstallTo', $ImageElement)
                 $UnattendBuilder.CreateAndAppendElement('DiskID', $DestinationDiskID, $InstallTo)
             }
-            if ($DestinationPartitionID)
+
+            if ($PSBoundParameters.ContainsKey('DestinationPartitionID'))
             {
                 $InstallTo = $UnattendBuilder.GetOrCreateChildElement('InstallTo', $ImageElement)
                 $UnattendBuilder.CreateAndAppendElement('PartitionID', $DestinationPartitionID, $InstallTo)
