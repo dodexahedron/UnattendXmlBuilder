@@ -13,27 +13,29 @@ $CultureCompleter = {
         }
     }
 }
-Register-ArgumentCompleter -CommandName New-UnattendBuilder,Set-UnattendLanguageSetting -ParameterName UiLanguage      -ScriptBlock $CultureCompleter
-Register-ArgumentCompleter -CommandName New-UnattendBuilder,Set-UnattendLanguageSetting -ParameterName SystemLocale    -ScriptBlock $CultureCompleter
-Register-ArgumentCompleter -CommandName New-UnattendBuilder,Set-UnattendLanguageSetting -ParameterName InputLocale     -ScriptBlock $CultureCompleter
-Register-ArgumentCompleter -CommandName Set-UnattendLanguageSetting                     -ParameterName SetupUiLanguage -ScriptBlock $CultureCompleter
-Register-ArgumentCompleter -CommandName Set-UnattendLanguageSetting                     -ParameterName UserLocale -ScriptBlock $CultureCompleter
-Register-ArgumentCompleter -CommandName Set-UnattendLanguageSetting                     -ParameterName UiLanguageFallback -ScriptBlock $CultureCompleter
+Register-ArgumentCompleter -CommandName New-UnattendBuilder, Set-UnattendLanguageSetting -ParameterName UiLanguage         -ScriptBlock $CultureCompleter
+Register-ArgumentCompleter -CommandName New-UnattendBuilder, Set-UnattendLanguageSetting -ParameterName SystemLocale       -ScriptBlock $CultureCompleter
+Register-ArgumentCompleter -CommandName New-UnattendBuilder, Set-UnattendLanguageSetting -ParameterName InputLocale        -ScriptBlock $CultureCompleter
+Register-ArgumentCompleter -CommandName New-UnattendBuilder, Set-UnattendLanguageSetting -ParameterName UserLocale         -ScriptBlock $CultureCompleter
+Register-ArgumentCompleter -CommandName Set-UnattendLanguageSetting                      -ParameterName SetupUiLanguage    -ScriptBlock $CultureCompleter
+Register-ArgumentCompleter -CommandName Set-UnattendLanguageSetting                      -ParameterName UiLanguageFallback -ScriptBlock $CultureCompleter
 
 Register-ArgumentCompleter -CommandName New-UnattendBuilder,Set-UnattendProductKey -ParameterName ProductKey -ScriptBlock {
     param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
     $TrimmedWord = $wordToComplete.Trim(("'",'"'))
     $WindowsKeyTable = [ordered]@{
-        Win10Home            = 'YTMG3-N6DKC-DKB77-7M9GH-8HVX7'
-        Win10Pro             = 'VK7JG-NPHTM-C97JM-9MPGT-3V66T'
-        Win10Edu             = 'YNMGQ-8RYV3-4PGQ3-C8XTP-7CFBY'
-        Win10Enterprise      = 'XGVPP-NMH47-7TTHJ-W3FW7-8HV2C'
+        Win11Home            = 'YTMG3-N6DKC-DKB77-7M9GH-8HVX7'
+        Win11Pro             = 'VK7JG-NPHTM-C97JM-9MPGT-3V66T'
+        Win11Edu             = 'YNMGQ-8RYV3-4PGQ3-C8XTP-7CFBY'
+        Win11Enterprise      = 'XGVPP-NMH47-7TTHJ-W3FW7-8HV2C'
         Server2016Standard   = 'WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY'
         Server2016Datacenter = 'CB7KF-BWN84-R7R2Y-793K2-8XDDG'
         Server2019Standard   = 'N69G4-B89J2-4G8F4-WWYCC-J464C'
         Server2019Datacenter = 'WMDGN-G9PQG-XVVXX-R3X43-63DFG'
         Server2022Standard   = 'VDYBN-27WPP-V4HQT-9VMD4-VMK7H'
         Server2022Datacenter = 'WX4NM-KYWYW-QJJR4-XV3QB-6VM33'
+        Server2025Standard   = 'TVRH6-WHNXV-R9WG3-9XRFY-MY832'
+        Server2025Datacenter = 'D764K-2NDRG-47T6Q-P8T8W-YP6DF'
     }
     foreach ($Key in $WindowsKeyTable.Keys)
     {
