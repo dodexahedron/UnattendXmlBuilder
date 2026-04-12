@@ -24,6 +24,9 @@
 .PARAMETER InputLocale
     Specifies the keyboard layout to set in WinPE and Windows.
 
+.PARAMETER UserLocale
+    Specifies the format used for dates, currency and other localized content.
+
 .PARAMETER ProductKey
     Specifies the product key to add the unattend file.
 
@@ -74,6 +77,10 @@ function New-UnattendBuilder
         $InputLocale,
 
         [Parameter()]
+        [cultureinfo]
+        $UserLocale,
+
+        [Parameter()]
         [string]
         $ProductKey,
 
@@ -119,6 +126,7 @@ function New-UnattendBuilder
         catch
         {
             $PSCmdlet.ThrowTerminatingError($_)
+            return
         }
 
         $LanguageParams = @{}
@@ -137,6 +145,11 @@ function New-UnattendBuilder
             'InputLocale'
             {
                 $LanguageParams.Add('InputLocale', $InputLocale)
+                continue
+            }
+            'UserLocale'
+            {
+                $LanguageParams.Add('UserLocale', $UserLocale)
                 continue
             }
             'ProductKey'
