@@ -67,10 +67,12 @@ function Add-UnattendUser
         $Pass = 'oobeSystem',
 
         [Parameter(Mandatory, ParameterSetName = 'LocalAdmin')]
+        [ValidateSet("True")]
         [switch]
         $LocalAdmin,
 
         [Parameter(Mandatory, ParameterSetName = 'LocalUser')]
+        [ValidateLength(1, 20)]
         [string[]]
         $Name,
 

@@ -1,3 +1,10 @@
+3.0.0:
+    Changed the ToString() method for the UnattendBuilder class so that the encoding XML declaration is set to UTF-8 as intended.
+    Added a new overload for the ToString() method for the UnattendBuilder class so that the encoding can be user defined.
+    Added parameter validation for the -UseRemainingSpace and -LocalAdmin switches in Add-UnattendDiskPartition and Add-UnattendUser respectively.
+        If a false value is specified the commands will throw an error.
+    Added length validation to the Name parameter for the -Name parameter in Add-UnattendUser to match Windows limitations in usernames. (1 - 20 chars).
+    Updated the recovery partition size from 620MB to 790MB in the BIOS/UEFI disk templates in Add-UnattendDiskPartition to match Windows 11s current defaults.
 2.0.0:
     Added parameter validation for the -WDS and -DataImage switches in Add-UnattendImage
         If a false value is specified it will throw an error.

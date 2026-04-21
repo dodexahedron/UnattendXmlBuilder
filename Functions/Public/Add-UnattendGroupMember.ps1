@@ -83,7 +83,6 @@ function Add-UnattendGroupMember
                 $UnattendBuilder.CreateAndAppendElement('SID', $User, $NewAccount)
                 $UnattendBuilder.CreateAndAppendElement('Group', $Group -join ';', $NewAccount)
             }
-
         }
         else
         {

@@ -8,19 +8,20 @@
     Copyright              = '(c) 2023 MartinGC94. All rights reserved.'
     Description            = 'Module for building Windows unattend XML documents.'
     PowerShellVersion      = '5.1'
+    ScriptsToProcess       = @({1})
     FormatsToProcess       = @()
-    FunctionsToExport      = @({1})
+    FunctionsToExport      = @({2})
     CmdletsToExport        = @()
     VariablesToExport      = @()
     AliasesToExport        = @()
     DscResourcesToExport   = @()
-    FileList               = @({2})
+    FileList               = @({3})
     PrivateData            = @{
         PSData = @{
              Tags         = @("Unattend", "Autounattend", "XML", "Windows", "Installation")
              ProjectUri   = 'https://github.com/MartinGC94/UnattendXmlBuilder'
              ReleaseNotes = @'
-{3}
+{4}
 '@
         }
     }

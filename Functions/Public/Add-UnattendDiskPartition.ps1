@@ -81,6 +81,7 @@ function Add-UnattendDiskPartition
         $SizeMB,
 
         [Parameter(Mandatory, ParameterSetName = "CustomExtend")]
+        [ValidateSet("True")]
         [switch]
         $UseRemainingSpace,
 
@@ -127,7 +128,7 @@ function Add-UnattendDiskPartition
                 VolumeLabel  = "System"
             }
             $RecoveryParams = @{
-                SizeMB        = 620
+                SizeMB        = 790
                 Filesystem    = "NTFS"
                 VolumeLabel   = "Recovery"
             }

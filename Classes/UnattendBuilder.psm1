@@ -1,6 +1,7 @@
 ﻿using module .\UnattendPass.psm1
 using namespace System
 using namespace System.IO
+using namespace System.Text
 using namespace System.Collections
 using namespace System.Xml
 
@@ -302,8 +303,13 @@ class UnattendBuilder
 
     [string] ToString()
     {
+        return $this.ToString([Encoding]::UTF8)
+    }
+
+    [string] ToString([Encoding] $Encoding)
+    {
         $Xml = $this.ToXml()
-        $Writer = [StringWriter]::new()
+        $Writer = [MartinGC94.UnattendXmlBuilder.StringWriter2]::new($Encoding)
         $Xml.Save($Writer)
         $Text = $Writer.ToString()
         $Writer.Dispose()

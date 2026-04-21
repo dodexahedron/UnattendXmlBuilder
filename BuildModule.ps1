@@ -86,10 +86,15 @@ $NewModuleFile = New-Item -Path "$DestinationDirectory\$ModuleName.psm1" -ItemTy
 $UniqueUsingStatements | Sort-Object | Add-Content -LiteralPath $NewModuleFile.FullName
 Add-Content -Value $Psm1Builder.ToString() -LiteralPath $NewModuleFile.FullName
 Copy-Item -LiteralPath "$PSScriptRoot\ModuleManifest.psd1" -Destination "$DestinationDirectory\$ModuleName.psd1"
+$ScriptToInclude = Get-ChildItem -LiteralPath "$PSScriptRoot\ScriptsToProcess" -File -Filter *.ps1 |
+    Copy-Item -Destination $DestinationDirectory -Force -PassThru
 #endregion
 
 #region update module manifest
 $FileList = (Get-ChildItem -LiteralPath $DestinationDirectory -File -Recurse | ForEach-Object -Process {
+    "'$($_.FullName.Replace("$DestinationDirectory\", ''))'"
+}) -join ','
+$ScriptsToProcess = ($ScriptToInclude | ForEach-Object -Process {
     "'$($_.FullName.Replace("$DestinationDirectory\", ''))'"
 }) -join ','
 $PublicFunctionNames = ($PublicFunctionNames | ForEach-Object -Process {
@@ -98,6 +103,7 @@ $PublicFunctionNames = ($PublicFunctionNames | ForEach-Object -Process {
 
 ((Get-Content -LiteralPath "$PSScriptRoot\ModuleManifest.psd1" -Raw) -replace '{(?=[^\d])','{{' -replace '(?<!\d)}','}}') -f @(
     "'$Version'"
+    $ScriptsToProcess
     $PublicFunctionNames
     $FileList
     $ReleaseNotes
