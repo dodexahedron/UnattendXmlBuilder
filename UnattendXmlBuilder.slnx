@@ -1,0 +1,11 @@
+<Solution>
+
+    <Folder Name="/Solution Items/">
+        <File Path=".gitignore" />
+        <File Path="README.md" />
+        <File Path="Directory.Build.props" />
+        <File Path="Directory.Packages.props" />
+    </Folder>
+    <Project Path="UnattendXmlBuilder.Core/UnattendXmlBuilder.Core.csproj" />
+
+</Solution>
